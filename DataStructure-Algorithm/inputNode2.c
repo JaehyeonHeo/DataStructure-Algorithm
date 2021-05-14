@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 typedef struct node {
@@ -18,7 +19,10 @@ int main(void)
 	head->link = NULL;
 
 	int i = 1;
-	for (i = 1; i <= 6; i++)
+	int size; 
+	printf("출력할 노드 수 : "); 
+	scanf("%d", &size); 
+	for (i = 1; i <= size; i++)
 	{
 		addNode(head, i * 10);
 	}
@@ -30,6 +34,17 @@ int main(void)
 		printf("%d번째 노드의 데이터값 : %d\n", j, curr->data);
 		curr = curr->link;
 		j++;
+	}
+
+	int k = 0; 
+	Node* temp = head; 
+	while (1)
+	{
+		if (temp == NULL) break; 
+		printf("%d 번째 메모리 해제 free(node%d)\n", k, k); 
+		free(temp); 
+		temp = temp->link; 
+		k++; 
 	}
 
 	return 0; 

@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 typedef struct node {
@@ -75,19 +76,35 @@ void printNode(HeadNode* h)
 /* 전체 노드 삭제 함수 */
 void deleteNode(HeadNode* h)
 {
-	printf("전체 노드 삭제 시작"); 
-	Node* temp = h->head;
-	while (temp->next != NULL)
+	printf("전체 노드 삭제 시작\n"); 
+	
+	if (h->head == NULL)
 	{
-		h->head = temp->next;
-		
-
-	}
-	if (temp->next == NULL)
-	{
-		free(temp);
 		free(h);
 	}
+	else if (h->head != NULL)
+	{
+		while(1)
+		{
+			Node* node;
+			Node* temp;
+			node = h->head;
+			int i = 0;
+
+			if (node == NULL) break;
+			
+			while (node->next != NULL)
+			{
+				node = node->next;
+				i++;
+			}
+			printf("전체 노드의 갯수 = %d\n", i);
+			temp = node;
+			free(temp);
+			printf("맨 뒷 노드 삭제 완료");
+		}
+	}
+	
 
 }
 
@@ -109,7 +126,39 @@ Node* searchNode(HeadNode* h, int data)
 /* 검색된 노드 삭제 함수 */
 void searchNodeDelete(HeadNode* h, Node* s)
 {
+	
+}
 
+/* 중간에 노드 삽입 함수 */
+void midInsertNode(HeadNode* h, int num)
+{
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	if (newNode != NULL)
+	{
+		if (h->head == NULL)
+		{
+			printf("노드가 없습니다");
+			h->head = newNode;
+		}
+		else
+		{
+			int i = 1;
+			int newData = 0;
+			Node* pn = h->head;
+			while (i != num)
+			{
+				pn = pn->next;
+				i++;
+			}
+			printf("\n%d 번째 바로 뒤에 삽입할 데이터값 입력 : ", i);
+			scanf("%d", &newData);
+
+			newNode->next = pn->next;
+			pn->next = newNode;
+			newNode->data = newData;
+		}
+		
+	}
 }
 
 int main(void)
@@ -123,16 +172,15 @@ int main(void)
 	rearInsertNode(h, 3); 
 	preInsertNode(h, 11); 
 	preInsertNode(h, 12); 
+
+	printNode(h);
+
+	midInsertNode(h, 2);  // 삽입할 노드 순서 입력 !
 	
 	printNode(h); 
 	
 	searchNode(h, 10);
 
-
-	deleteNode(h); 
-	printNode(h);
-
-	
 
 	return 0; 
 }

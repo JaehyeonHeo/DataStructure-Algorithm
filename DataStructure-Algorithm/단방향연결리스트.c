@@ -62,6 +62,7 @@ void rearInsertNode(HeadNode* h, int data)
 void printNode(HeadNode* h)
 {
 	printf("\n===========결과================\n"); 
+	if (h == NULL) return; 
 	Node* curr;
 	curr = h->head;
 	int i = 1;
@@ -82,30 +83,17 @@ void deleteNode(HeadNode* h)
 	{
 		free(h);
 	}
-	else if (h->head != NULL)
+	else 
 	{
-		while(1)
+		while(h->head != NULL)
 		{
-			Node* node;
-			Node* temp;
-			node = h->head;
-			int i = 0;
-
-			if (node == NULL) break;
-			
-			while (node->next != NULL)
-			{
-				node = node->next;
-				i++;
-			}
-			printf("전체 노드의 갯수 = %d\n", i);
-			temp = node;
-			free(temp);
-			printf("맨 뒷 노드 삭제 완료");
+			Node* temp = h->head;
+			h->head = h->head->next; 
+			free(temp); 
 		}
+		free(h); 
+		printf("삭제 완료");
 	}
-	
-
 }
 
 /* 노드 검색 함수 */
@@ -175,11 +163,15 @@ int main(void)
 
 	printNode(h);
 
-	midInsertNode(h, 2);  // 삽입할 노드 순서 입력 !
+	//midInsertNode(h, 2);  // 삽입할 노드 순서 입력 !
 	
-	printNode(h); 
+	printf("\n%p\n", h->head); // 삭제 전 헤드 다음 노드의 주소 
+
+	deleteNode(h); 
+
+	printf("\n%p", h->head);   // 삭제 후 헤드 다음 노드의 주소 
 	
-	searchNode(h, 10);
+	//searchNode(h, 10);
 
 
 	return 0; 

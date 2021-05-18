@@ -1,13 +1,16 @@
 #include <stdio.h>
 
+// 구조체 리스트 선언 
 typedef struct listnode {
 	int data; 
 	struct listnode* link; 
 }ListNode;
+
 typedef struct {
 	ListNode* head; 
 }HeadNode;
 
+// 함수선언+정의(전치)
 HeadNode* createHead()
 {
 	HeadNode* h = (HeadNode*)malloc(sizeof(HeadNode)); 
@@ -56,6 +59,42 @@ void insertLastNode(HeadNode* phead, ListNode* newNode)
 	}
 }
 
+void printNode(HeadNode* phead)
+{
+	if (phead->head == NULL)
+	{
+		printf("출력할 노드가 없습니다");
+	}
+	else
+	{
+		printf("\n========출력함수로 모든 데이터 출력========\n"); 
+		ListNode* curr = phead->head->link; 
+		int i = 1; 
+		while (curr != phead->head)
+		{
+			printf("%d번째 노드의 데이터 : %d\n", i, curr->data); 
+			curr = curr->link; 
+			i++; 
+		}
+		printf("%d번째 노드의 데이터 : %d\n", i, phead->head->data); 
+
+	}
+}
+
+void deleteNode(HeadNode* phead)
+{
+	ListNode* curr = NULL; 
+	while (phead->head != NULL)
+	{
+		curr = phead->head->link;
+		phead->head->link = phead->head->link->link; 
+		free(curr);
+		curr = NULL; 
+	}
+	free(phead);
+}
+
+// 메인함수 
 int main()
 {
 	HeadNode* h = createHead(); 
@@ -70,14 +109,11 @@ int main()
 	insertLastNode(h, n3);
 	insertLastNode(h, n4); 
 
-	printf("%d %d\n", n1->data, n2->data); // 데이터 값 확인 
+	printNode(h);
 
-	printf("%p = %p\n", n4->link, n2); // 링크 확인 
+	//deleteNode(h); 
 
-	printf("마지막 노드 데이터 : %d\n", h->head->data); 
-	printf("첫번째 노드 데이터 : %d\n", h->head->link->data); 
-	printf("두번째 노드 데이터 : %d\n", h->head->link->link->data); 
-	printf("세번째 노드 데이터 : %d\n", h->head->link->link->link->data); 
+	//printNode(h); 
 
 	return 0; 
 }
